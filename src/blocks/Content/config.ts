@@ -15,36 +15,22 @@ const columnFields: Field[] = [
     type: 'select',
     defaultValue: 'oneThird',
     options: [
-      {
-        label: 'One Third',
-        value: 'oneThird',
-      },
-      {
-        label: 'Half',
-        value: 'half',
-      },
-      {
-        label: 'Two Thirds',
-        value: 'twoThirds',
-      },
-      {
-        label: 'Full',
-        value: 'full',
-      },
+      { label: 'One Third', value: 'oneThird' },
+      { label: 'Half', value: 'half' },
+      { label: 'Two Thirds', value: 'twoThirds' },
+      { label: 'Full', value: 'full' },
     ],
   },
   {
     name: 'richText',
     type: 'richText',
     editor: lexicalEditor({
-      features: ({ rootFeatures }) => {
-        return [
-          ...rootFeatures,
-          HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
-          FixedToolbarFeature(),
-          InlineToolbarFeature(),
-        ]
-      },
+      features: ({ rootFeatures }) => [
+        ...rootFeatures,
+        HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+        FixedToolbarFeature(),
+        InlineToolbarFeature(),
+      ],
     }),
     label: false,
   },
@@ -55,12 +41,19 @@ const columnFields: Field[] = [
   link({
     overrides: {
       admin: {
-        condition: (_data, siblingData) => {
-          return Boolean(siblingData?.enableLink)
-        },
+        condition: (_data, siblingData) => Boolean(siblingData?.enableLink),
       },
     },
   }),
+  {
+    name: 'image',
+    type: 'upload',
+    relationTo: 'media',
+    label: 'Image (optional)',
+    admin: {
+      description: 'Upload or choose an image to display in this column.',
+    },
+  },
 ]
 
 export const Content: Block = {
@@ -70,9 +63,7 @@ export const Content: Block = {
     {
       name: 'columns',
       type: 'array',
-      admin: {
-        initCollapsed: true,
-      },
+      admin: { initCollapsed: true },
       fields: columnFields,
     },
   ],
